@@ -28,6 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List list = new List();
+  final TextEditingController _controller = new TextEditingController();
   void fetchData() {
     getData().then((res) {
       setState(() {
@@ -42,29 +43,28 @@ class _MyHomePageState extends State<MyHomePage> {
     fetchData();
   }
 
-  @override
+  void _myFunction(BuildContext context){
+    print("clicked "+ _controller.text);
+  }
+
+   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-      ),
-      body: new Center(
-        child: new ListView.builder(
-          itemCount: list.length,
-          itemBuilder: ((BuildContext _context, int position) {
-            return new ListTile(
-              title: new Text( list[position]['login'].toString()),
-              subtitle: new Text(list[position]['url']),
-              leading: new Image.network(list[position]['avatar_url']),
-            );   
-          }),
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: fetchData,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ),
+      appBar: new AppBar(title: new Text('Title')),
+      body: new Column(children: <Widget>[
+        new Expanded(child: new Container(
+          margin: new EdgeInsets.only(bottom: 30.0),
+          child: new TextField(
+            maxLines: null,
+            controller: _controller,
+          ),
+          padding: new EdgeInsets.all(8.0),
+        )),
+        new RaisedButton(
+          onPressed: () => _myFunction(context),
+          child: new Center(child: new Text('Save'))
+        )
+      ]),
     );
   }
 
